@@ -100,6 +100,7 @@ initdb -E UTF8 | indent
 pg_ctl -l .pg.log -w start | indent
 psql -c "CREATE USER ${user} WITH SUPERUSER ENCRYPTED PASSWORD '${password}'" postgres | indent
 createdb --owner $user $DATABASE | indent
+pg_ctl -w stop | indent
 DATABASE_URL="postgres://${user}:${password}@localhost:5432/${DATABASE}"
 
 echo "export PGHOST=$PGHOST" >> $BUILDPACK_DIR/export
@@ -130,7 +131,7 @@ export PGHOST="$PGHOST"
 export DATABASE_URL="$DATABASE_URL"
 export PGHOST=/tmp
 export PGDATA=$HOME/.indyno/vendor/postgresql/data
-pg_ctl -w restart >/dev/null
+pg_ctl -w start >/dev/null
 EOF
 
 echo "-----> Postgresql done"
